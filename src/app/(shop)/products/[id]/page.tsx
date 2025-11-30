@@ -121,7 +121,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
                         <div className="flex gap-3 mt-6">
                             <button className="flex-1 flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors border border-border-light dark:border-border-dark">장바구니 담기</button>
-                            <button className="flex-1 flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-opacity">바로 구매하기</button>
+                            <Link href="/checkout" className="flex-1 flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-opacity">바로 구매하기</Link>
                         </div>
                     </div>
                 </div>
