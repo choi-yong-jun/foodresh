@@ -1,10 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function LoginPage() {
+    const searchParams = useSearchParams();
     const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+
+    useEffect(() => {
+        const mode = searchParams.get('mode');
+        if (mode === 'signup') {
+            setAuthMode('signup');
+        }
+    }, [searchParams]);
 
     return (
         <div
@@ -14,7 +23,7 @@ export default function LoginPage() {
             }}
         >
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-            <div className="relative flex w-full max-w-md flex-col rounded-xl bg-background-light p-8 shadow-2xl dark:bg-background-dark/90 dark:backdrop-blur-lg">
+            <div className="relative flex w-full max-w-md flex-col rounded-xl bg-background-light p-8 shadow-2xl dark:bg-background-dark/90 dark:backdrop-blur-lg my-8">
                 <div className="flex flex-col items-center gap-2 mb-8">
                     <div className="size-8 text-primary">
                         <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -68,20 +77,85 @@ export default function LoginPage() {
                             </div>
                         </label>
 
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <input
-                                    className="h-4 w-4 rounded border-2 border-gray-300 bg-transparent text-primary checked:border-primary checked:bg-primary focus:border-primary focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600"
-                                    id="remember-me"
-                                    type="checkbox"
-                                    style={{
-                                        backgroundImage: "url(\"data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23ffffff' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e\")"
-                                    }}
-                                />
-                                <label className="cursor-pointer text-sm font-normal leading-normal text-text-light dark:text-text-dark" htmlFor="remember-me">로그인 상태 유지</label>
+                        {authMode === 'signup' && (
+                            <>
+                                <label className="flex flex-col">
+                                    <p className="pb-2 text-sm font-medium leading-normal text-text-light dark:text-text-dark">비밀번호 확인</p>
+                                    <input className="form-input flex h-12 w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-3 text-base font-normal leading-normal text-text-light placeholder:text-text-muted-light focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-800 dark:text-text-dark dark:placeholder:text-text-muted-dark" placeholder="••••••••" type="password" />
+                                </label>
+                                <label className="flex flex-col">
+                                    <p className="pb-2 text-sm font-medium leading-normal text-text-light dark:text-text-dark">이름</p>
+                                    <input className="form-input flex h-12 w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-3 text-base font-normal leading-normal text-text-light placeholder:text-text-muted-light focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-800 dark:text-text-dark dark:placeholder:text-text-muted-dark" placeholder="홍길동" type="text" />
+                                </label>
+                                <label className="flex flex-col">
+                                    <p className="pb-2 text-sm font-medium leading-normal text-text-light dark:text-text-dark">연락처</p>
+                                    <input className="form-input flex h-12 w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-3 text-base font-normal leading-normal text-text-light placeholder:text-text-muted-light focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-800 dark:text-text-dark dark:placeholder:text-text-muted-dark" placeholder="010-1234-5678" type="tel" />
+                                </label>
+                                <div className="flex flex-col gap-2">
+                                    <p className="text-sm font-medium leading-normal text-text-light dark:text-text-dark">주소</p>
+                                    <div className="flex items-center gap-2">
+                                        <input className="form-input flex h-12 w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-3 text-base font-normal leading-normal text-text-light placeholder:text-text-muted-light focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-800 dark:text-text-dark dark:placeholder:text-text-muted-dark" placeholder="우편번호" readOnly type="text" />
+                                        <button className="flex h-12 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-gray-200 px-4 text-sm font-medium text-text-light hover:bg-gray-300 dark:bg-gray-700 dark:text-text-dark dark:hover:bg-gray-600" type="button">우편번호 검색</button>
+                                    </div>
+                                    <input className="form-input flex h-12 w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-3 text-base font-normal leading-normal text-text-light placeholder:text-text-muted-light focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-800 dark:text-text-dark dark:placeholder:text-text-muted-dark" placeholder="기본주소" readOnly type="text" />
+                                    <input className="form-input flex h-12 w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-3 text-base font-normal leading-normal text-text-light placeholder:text-text-muted-light focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-800 dark:text-text-dark dark:placeholder:text-text-muted-dark" placeholder="상세주소" type="text" />
+                                </div>
+                                <div className="mt-2 flex flex-col gap-2">
+                                    <div className="flex items-center gap-2">
+                                        <input className="h-4 w-4 rounded border-2 border-gray-300 bg-transparent text-primary checked:border-primary checked:bg-primary focus:border-primary focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600" id="terms-all" type="checkbox"
+                                            style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23ffffff' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e\")" }}
+                                        />
+                                        <label className="cursor-pointer text-sm font-semibold leading-normal text-text-light dark:text-text-dark" htmlFor="terms-all">전체 동의</label>
+                                    </div>
+                                    <div className="pl-6 flex flex-col gap-2">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <input className="h-4 w-4 rounded border-2 border-gray-300 bg-transparent text-primary checked:border-primary checked:bg-primary focus:border-primary focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600" id="terms-service" type="checkbox"
+                                                    style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23ffffff' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e\")" }}
+                                                />
+                                                <label className="cursor-pointer text-sm font-normal leading-normal text-text-muted-light dark:text-text-muted-dark" htmlFor="terms-service">이용약관 동의 (필수)</label>
+                                            </div>
+                                            <Link className="shrink-0 text-xs font-medium text-gray-500 hover:underline dark:text-gray-400" href="#">보기</Link>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <input className="h-4 w-4 rounded border-2 border-gray-300 bg-transparent text-primary checked:border-primary checked:bg-primary focus:border-primary focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600" id="terms-privacy" type="checkbox"
+                                                    style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23ffffff' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e\")" }}
+                                                />
+                                                <label className="cursor-pointer text-sm font-normal leading-normal text-text-muted-light dark:text-text-muted-dark" htmlFor="terms-privacy">개인정보 수집 및 이용 동의 (필수)</label>
+                                            </div>
+                                            <Link className="shrink-0 text-xs font-medium text-gray-500 hover:underline dark:text-gray-400" href="#">보기</Link>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <input className="h-4 w-4 rounded border-2 border-gray-300 bg-transparent text-primary checked:border-primary checked:bg-primary focus:border-primary focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600" id="terms-marketing" type="checkbox"
+                                                    style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23ffffff' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e\")" }}
+                                                />
+                                                <label className="cursor-pointer text-sm font-normal leading-normal text-text-muted-light dark:text-text-muted-dark" htmlFor="terms-marketing">마케팅 정보 수신 동의 (선택)</label>
+                                            </div>
+                                            <Link className="shrink-0 text-xs font-medium text-gray-500 hover:underline dark:text-gray-400" href="#">보기</Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+
+                        {authMode === 'login' && (
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        className="h-4 w-4 rounded border-2 border-gray-300 bg-transparent text-primary checked:border-primary checked:bg-primary focus:border-primary focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600"
+                                        id="remember-me"
+                                        type="checkbox"
+                                        style={{
+                                            backgroundImage: "url(\"data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23ffffff' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e\")"
+                                        }}
+                                    />
+                                    <label className="cursor-pointer text-sm font-normal leading-normal text-text-light dark:text-text-dark" htmlFor="remember-me">로그인 상태 유지</label>
+                                </div>
+                                <Link className="shrink-0 text-sm font-medium text-primary hover:underline" href="#">비밀번호 찾기</Link>
                             </div>
-                            <Link className="shrink-0 text-sm font-medium text-primary hover:underline" href="#">비밀번호 찾기</Link>
-                        </div>
+                        )}
 
                         <button className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 mt-4 bg-primary text-white text-base font-bold leading-normal tracking-wide shadow-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark" type="submit">
                             <span className="truncate">{authMode === 'login' ? '로그인' : '회원가입'}</span>
