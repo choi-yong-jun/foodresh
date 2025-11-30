@@ -67,7 +67,7 @@ export default function Header() {
                     </nav>
                 </div>
                 <div className="flex flex-1 justify-end gap-2 sm:gap-4">
-                    <label className="hidden sm:flex flex-col min-w-40 !h-10 max-w-64">
+                    <label className="hidden sm:flex flex-col min-w-40 h-10! max-w-64">
                         <div className="flex w-full flex-1 items-stretch rounded-lg h-full">
                             <div className="text-text-muted-light dark:text-text-muted-dark flex border-none bg-background-light dark:bg-background-dark items-center justify-center pl-4 rounded-l-lg border-r-0">
                                 <span className="material-symbols-outlined">search</span>
@@ -85,7 +85,7 @@ export default function Header() {
                         <Link href="/login" className="hidden md:flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark text-sm font-bold leading-normal tracking-[0.015em]">
                             <span className="truncate">로그인</span>
                         </Link>
-                        <Link href="/checkout" className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-transparent text-text-light dark:text-text-dark gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+                        <Link href="/cart" className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-transparent text-text-light dark:text-text-dark gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
                             <span className="material-symbols-outlined">shopping_cart</span>
                         </Link>
                     </div>

@@ -2,61 +2,28 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-
-interface CartItem {
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-    imageUrl: string;
-    imageAlt: string;
-}
-
-const INITIAL_ITEMS: CartItem[] = [
-    {
-        id: 1,
-        name: "GAP 인증 설향 딸기 1kg",
-        price: 18900,
-        quantity: 1,
-        imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuD6lFa41fRSkzVys7MvkP5jO2owio7NDnFAJ-R9JD6ZWl8smR4gB0lWAjK3vkFVR1gtaXmzaDehXsP9MbhBDB2zZM4c-aZlvQjtGpBrJ_Gn_HArh9mhrUWblFbksuKCuHao-G23HFqKKOgeTxcdebqs8csnh8a5xYNo5UhyH68HFnzX3gL05l-0dT_1AduAR0Emgsq9vUKqM1e8XuGKtywKRyNfw7W7zFdTACR7ean6dx5_24u1VqaP-Le_OtuKQ25dwx3oNtuZqDrD",
-        imageAlt: "Fresh strawberries in a basket"
-    },
-    {
-        id: 2,
-        name: "제주 월동 양배추 1통",
-        price: 3500,
-        quantity: 1,
-        imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuDzCHJ7e7R9RzAh9vsy895EAUzU_eAF1tY5AMVyeueUT3zsQy71v8Pl2ixAGJJDNZD-1qJK1Kp-1e4If43jQH6gzOsXjJM05Wzs9vj7E_2lJvctmgidUSi-iyHOLjFz1pX70PbAa8k-pakLUhl4D7Y1zLnSyoDRD-Vf2UYrZ0Da39xxka7pTjKxdVyPjht9Yv0nYGxAPrICBl0sblNrU1s8bmZvIT4h1mTzA4nVLSWyl80NXXz0ZtFhitW5DXH1i3YCwOAjcVMiYbT2",
-        imageAlt: "A whole fresh cabbage"
-    }
-];
+import { useCartStore } from '@/store/cartStore';
+import { INITIAL_CHECKOUT_ITEMS, DEFAULT_SHIPPING_COST } from '@/constants/cart';
+import { formatPrice } from '@/lib/format';
 
 export default function CheckoutPage() {
     const [isOrderItemsOpen, setIsOrderItemsOpen] = useState(true);
-    const [items, setItems] = useState<CartItem[]>(INITIAL_ITEMS);
-    const [totalAmount, setTotalAmount] = useState(0);
-    const shippingCost = 3000;
+    const {
+        items,
+        setItems,
+        setShippingCost,
+        getAllItemsTotal,
+        handleQuantityChange,
+        handleDeleteItem,
+    } = useCartStore();
 
+    // 초기 데이터 설정
     useEffect(() => {
-        const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        setTotalAmount(total);
-    }, [items]);
+        setItems(INITIAL_CHECKOUT_ITEMS);
+        setShippingCost(DEFAULT_SHIPPING_COST);
+    }, [setItems, setShippingCost]);
 
-    const handleQuantityChange = (id: number, change: number) => {
-        setItems(prevItems => prevItems.map(item => {
-            if (item.id === id) {
-                const newQuantity = Math.max(1, item.quantity + change);
-                return { ...item, quantity: newQuantity };
-            }
-            return item;
-        }));
-    };
-
-    const handleDeleteItem = (id: number) => {
-        setItems(prevItems => prevItems.filter(item => item.id !== id));
-    };
-
-    const finalAmount = totalAmount + (items.length > 0 ? shippingCost : 0);
+    const finalAmount = getAllItemsTotal() + (items.length > 0 ? DEFAULT_SHIPPING_COST : 0);
 
     return (
         <div className="flex flex-col items-center py-8 lg:py-12 px-4">
@@ -101,7 +68,7 @@ export default function CheckoutPage() {
                                                         role="img"
                                                         aria-label={item.imageAlt}
                                                     />
-                                                    <div className="flex-grow min-w-0 w-full">
+                                                    <div className="grow min-w-0 w-full">
                                                         <div className="flex justify-between items-start mb-2">
                                                             <p className="font-medium text-text-light dark:text-text-dark truncate pr-2">{item.name}</p>
                                                             <button
@@ -120,7 +87,7 @@ export default function CheckoutPage() {
                                                                 >
                                                                     <span className="material-symbols-outlined text-sm">remove</span>
                                                                 </button>
-                                                                <span className="px-2 py-1 text-sm font-medium min-w-[2rem] text-center">{item.quantity}</span>
+                                                                <span className="px-2 py-1 text-sm font-medium min-w-8 text-center">{item.quantity}</span>
                                                                 <button
                                                                     onClick={() => handleQuantityChange(item.id, 1)}
                                                                     className="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -129,7 +96,7 @@ export default function CheckoutPage() {
                                                                 </button>
                                                             </div>
                                                             <p className="font-bold text-text-light dark:text-text-dark whitespace-nowrap">
-                                                                {(item.price * item.quantity).toLocaleString()}원
+                                                                {formatPrice(item.price * item.quantity)}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -179,7 +146,7 @@ export default function CheckoutPage() {
                                         <label className="block text-sm font-medium mb-1 text-text-light dark:text-text-dark" htmlFor="postcode">주소</label>
                                         <div className="flex gap-2">
                                             <input className="w-1/3 rounded-md border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark px-3 py-2 text-text-light dark:text-text-dark focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" id="postcode" placeholder="우편번호" type="text" />
-                                            <button className="flex-shrink-0 rounded-md bg-gray-200 dark:bg-gray-700 px-4 text-sm font-bold text-text-light dark:text-text-dark hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">검색</button>
+                                            <button className="shrink-0 rounded-md bg-gray-200 dark:bg-gray-700 px-4 text-sm font-bold text-text-light dark:text-text-dark hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">검색</button>
                                         </div>
                                         <input className="mt-2 w-full rounded-md border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark px-3 py-2 text-text-light dark:text-text-dark focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" id="address-main" placeholder="기본 주소" type="text" />
                                         <input className="mt-2 w-full rounded-md border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark px-3 py-2 text-text-light dark:text-text-dark focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" id="address-detail" placeholder="상세 주소" type="text" />
@@ -230,22 +197,22 @@ export default function CheckoutPage() {
                                 <div className="space-y-3 border-b border-border-light dark:border-border-dark pb-4 mb-4 text-sm">
                                     <div className="flex justify-between">
                                         <span className="text-text-muted-light dark:text-text-muted-dark">상품 금액</span>
-                                        <span className="text-text-light dark:text-text-dark">{totalAmount.toLocaleString()}원</span>
+                                        <span className="text-text-light dark:text-text-dark">{formatPrice(getAllItemsTotal)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-text-muted-light dark:text-text-muted-dark">배송비</span>
                                         <span className="text-text-light dark:text-text-dark">
-                                            {items.length > 0 ? `+ ${shippingCost.toLocaleString()}원` : '0원'}
+                                            {items.length > 0 ? `+ ${formatPrice(DEFAULT_SHIPPING_COST)}` : formatPrice(0)}
                                         </span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-text-muted-light dark:text-text-muted-dark">할인/포인트</span>
-                                        <span className="text-red-500 font-medium">- 0원</span>
+                                        <span className="text-red-500 font-medium">- {formatPrice(0)}</span>
                                     </div>
                                 </div>
                                 <div className="flex justify-between items-center font-bold text-lg">
                                     <span className="text-text-light dark:text-text-dark">총 결제 금액</span>
-                                    <span className="text-primary text-2xl">{finalAmount.toLocaleString()}원</span>
+                                    <span className="text-primary text-2xl">{formatPrice(finalAmount)}</span>
                                 </div>
                             </div>
 
@@ -260,7 +227,7 @@ export default function CheckoutPage() {
                                 className="w-full rounded-lg bg-primary h-14 text-white font-bold text-lg hover:bg-primary/90 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors shadow-md"
                                 disabled={items.length === 0}
                             >
-                                {finalAmount.toLocaleString()}원 결제하기
+                                {formatPrice(finalAmount)} 결제하기
                             </button>
                         </div>
                     </div>

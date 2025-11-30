@@ -40,7 +40,7 @@ export default function ProductCard({
                             {discount}%
                         </div>
                     )}
-                    <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-black/50 to-transparent"></div>
                     <div className="absolute bottom-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
                         <button className="w-9 h-9 flex items-center justify-center bg-white/90 dark:bg-black/90 rounded-full text-text-light dark:text-text-dark hover:bg-primary hover:text-white transition-colors">
                             <span className="material-symbols-outlined text-base">favorite_border</span>
