@@ -40,24 +40,28 @@ export default function Home() {
             </h2>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
               <ProductCard
+                id={1}
                 name="유기농 대추방울토마토"
                 price={15900}
                 imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuBXOhB4XjLyssn2UweWvwaZ10KmlMYCSHrYmStfEdAYNkt5MLKsbt6TJQvMGtlJsrE5jwi3Xy2zSPhsetvFJ319GGnCwzqhP31ake4AADmzHILj21nWkW62qyWqEKpylYyPX9PurPIcVJwhiqh659-XApf0V0t98yyXyL6BGiPQfr7gZMIF5dVYl2MeHGwUn68giNzpD3Sbea6xIr7pnfLGVE-TAvcVHcxS8tQC0xq4wyuGMXCeNFiVYme6B3MnzAdhPEuWn8eyyj0F"
                 imageAlt="Organic grape tomatoes"
               />
               <ProductCard
+                id={2}
                 name="아삭한 로메인 상추"
                 price={3500}
                 imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuBnsjjk0EjdM6_Vi7Eid_DJOXCXxjf1LEiU80Ow-9ZVub9GHWrtvf5GMqo7xOkwuReTPc2abAejHihdOE-VSR9E6aRbZLF8zqcSzn7Goh7sYkXnpLFpQumt16321LPKEOPvTg_hBZ2Z_1MutfkFavRNbA_6AgsH7XF-W9tfRebF_wH8__uiXnELUmWAq_g3upKpu4e-QVbMw8O069a94vay2V9R3a6gFbdm7eh5KP-cThAUGhviiBgTXOL0Bz6v4B9Md5nLb2khrlZP"
                 imageAlt="Crispy romaine lettuce"
               />
               <ProductCard
+                id={3}
                 name="고당도 샤인머스캣"
                 price={25000}
                 imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuDEW_vn6soRg2U_ge7iIXGzxb5KuabyVqnw_y88ERTFAFJT-zqJNJYYYeHXtSyw8lWTOc4xWrOB5IcKoTNfvBW0XBgmEqI_65_tr6VgStTvVujEbFiLdpu8MbUb74m5kAN6g8Upcu2H1Zyf00v8bMNEfMDgbjCexkZ6CqJsr9ytngD9oR0GBdAHuukliqkFBjPLN3dWdKk2Kjh64GOOwxvyU3O4B8ICSSG4QuAfAkLs1QB-Rdho_z3vDISLJq-OULoYrGHGzKUP4NcO"
                 imageAlt="High-sugar Shine Muscat grapes"
               />
               <ProductCard
+                id={4}
                 name="제주 흑돼지 오겹살"
                 price={22000}
                 imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuCLTrgXNztUXs0823PaJVuifbTtihjaTdb7gSOgCIX1JD-mY8FaFco1fruRshJFd2QGrxwu7iP1ZYZen0156nQ7GL5cjfWiGvUoV3W6SwtI70APxM2NQiiKqe36rCW6qs-_v32DViNB_DnVUolxIQ_IW0kJpg_IcUNIxxtDyYbLMi5_KWsGbvI3nZBgivP4mK3kKNBPy2yMRUKYdQgSxKbQCS7xGKD_Z6IesUNYIjFZ26P2Lo-fqcAs3doW5Qt71blUvIqllcgkPeck"
@@ -96,24 +100,28 @@ export default function Home() {
             </h2>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
               <ProductCard
+                id={5}
                 name="완도 활전복"
                 price={35000}
                 imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuALkLrcUlwsYloLFIjo3P3qEoT3VwU1JwWhW5bzAjdVz027lV1IlSepfp4XpbRQGIgOdtwnrWC8vEpxTbBxyuCiddZjiF83tku4YbMs4hJnsxcjS3jZ4qAcKUklp3EimMa5MdW4cpSq_3F0NgoHwKgNQR2RcqL1F0N9VmEvqUKn4NQnloxMO-4f3GN-bXhvEZa9xZFESQdCvO-F7PdgMMZapdxWc7jlQcAdslK5R-Puwhe3_rZDRI3Brh2pc88gZoaHGKmOpJdVggWg"
                 imageAlt="Fresh abalone from Wando"
               />
               <ProductCard
+                id={6}
                 name="유기농 당근 주스"
                 price={12000}
                 imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuBnyzuEa9nOJAf53E_C2skhCC-CWAPzJHZrdr0at3umRx-Ta3VHNfW8cp5538EvpCTLaTr7bQsynGz8aaiQgQypmbGQFc-KXWbs5jx1nmVx0P0evh0dkswG-iMnzWis9ZJGEAyNVHP45ahGU3nWbvUOVyVPEzudcNEKb72QRbpnj22vE5kGlyRGHF38c9mATkdvwUjZ4mUBGzhMzJ2sOt5Uc2UymBfLWjFYztdwhoS_IWz7NtRswIvQAPrQJoHwasnUfBpx59pZHP7y"
                 imageAlt="A glass of fresh carrot juice"
               />
               <ProductCard
+                id={7}
                 name="무농약 블루베리"
                 price={18000}
                 imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuB0kMKKzOXvF2iNRc1nXeLO3MgNP4s5ekemoImCxsnUN0SCEVFix6QCqfpenuPJRuMNRvAPvWyDxlxtQpiOw1mvFsB5swoEuwltkFpyswStStqGDMMcMUtIIMP2uHvwgixI4jr-Rx2Gh3JrtoXTJ5L5mI4eml9rS4_Rsi6DqNtvcmHnwGahIw8F4wl3gaDFgMlJqlw2tUmqGrrU9xwats3nrOX5xExyiQRSTF2CaRVDrC1rccyT7jYvNpVP09qFj9Jmq5NFhIVU3elW"
                 imageAlt="A basket of fresh blueberries"
               />
               <ProductCard
+                id={8}
                 name="프리미엄 한우 선물세트"
                 price={120000}
                 imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuDCEm7oSbFDLW0ApdbJAF2RWFjBEwVwesK-LcUUCSmxid1VP7Rw5TmWLuqf-AG7mXkAWCtl82jWvdhh8KaN_jjdIOIPu5nJ73GbDMGaUgzUjgEu4e3I8XCbyP_4bUb38r79dBi3ZSSCkJGN8kB6WCRyLxs4oGcUGQpYhfdEHuwZS50UPWitHiN22HBnBBKFlNJGlof2lsgbIeFyEK_X0xCWOt_2xN-OWns1Zg0BOPOHnyNAqxBCw2HoUK6dbb-35UjCbasTj_cQv0DM"

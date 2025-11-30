@@ -151,44 +151,19 @@ export default function CategoryPage({ params }: { params: { category: string } 
                         {/* Product Grid */}
                         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-8">
                             {PRODUCTS.map((product) => (
-                                <div key={product.id} className="group relative flex flex-col gap-3">
-                                    <div className="relative w-full overflow-hidden rounded-lg">
-                                        <div
-                                            className="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
-                                            style={{ backgroundImage: `url('${product.imageUrl}')` }}
-                                            role="img"
-                                            aria-label={product.imageAlt}
-                                        />
-                                        {product.discount && (
-                                            <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                                                {product.discount}%
-                                            </div>
-                                        )}
-                                        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/50 to-transparent"></div>
-                                        <div className="absolute bottom-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
-                                            <button className="w-9 h-9 flex items-center justify-center bg-white/90 dark:bg-black/90 rounded-full text-text-light dark:text-text-dark hover:bg-primary hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined text-base">favorite_border</span>
-                                            </button>
-                                            <button className="w-9 h-9 flex items-center justify-center bg-white/90 dark:bg-black/90 rounded-full text-text-light dark:text-text-dark hover:bg-primary hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined text-base">add_shopping_cart</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <p className="font-semibold text-base leading-snug text-text-light dark:text-text-dark">{product.name}</p>
-                                        <p className="text-sm text-text-muted-light dark:text-text-muted-dark mt-1">{product.description}</p>
-                                        <div className="flex items-center gap-2 mt-2">
-                                            <p className="text-lg font-bold text-primary">{product.price.toLocaleString()}원</p>
-                                            {product.originalPrice && (
-                                                <p className="text-sm text-text-muted-light dark:text-text-muted-dark line-through">{product.originalPrice.toLocaleString()}원</p>
-                                            )}
-                                        </div>
-                                        <div className="flex items-center gap-1 mt-1 text-sm text-text-muted-light dark:text-text-muted-dark">
-                                            <span className="material-symbols-outlined text-base text-yellow-500" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                                            <span>{product.rating} ({product.reviewCount})</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <ProductCard
+                                    key={product.id}
+                                    id={product.id}
+                                    name={product.name}
+                                    price={product.price}
+                                    imageUrl={product.imageUrl}
+                                    imageAlt={product.imageAlt}
+                                    originalPrice={product.originalPrice}
+                                    discount={product.discount}
+                                    rating={product.rating}
+                                    reviewCount={product.reviewCount}
+                                    description={product.description}
+                                />
                             ))}
                         </div>
 
