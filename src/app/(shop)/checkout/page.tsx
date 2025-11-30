@@ -1,10 +1,62 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+interface CartItem {
+    id: number;
+    name: string;
+    price: number;
+    quantity: number;
+    imageUrl: string;
+    imageAlt: string;
+}
+
+const INITIAL_ITEMS: CartItem[] = [
+    {
+        id: 1,
+        name: "GAP 인증 설향 딸기 1kg",
+        price: 18900,
+        quantity: 1,
+        imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuD6lFa41fRSkzVys7MvkP5jO2owio7NDnFAJ-R9JD6ZWl8smR4gB0lWAjK3vkFVR1gtaXmzaDehXsP9MbhBDB2zZM4c-aZlvQjtGpBrJ_Gn_HArh9mhrUWblFbksuKCuHao-G23HFqKKOgeTxcdebqs8csnh8a5xYNo5UhyH68HFnzX3gL05l-0dT_1AduAR0Emgsq9vUKqM1e8XuGKtywKRyNfw7W7zFdTACR7ean6dx5_24u1VqaP-Le_OtuKQ25dwx3oNtuZqDrD",
+        imageAlt: "Fresh strawberries in a basket"
+    },
+    {
+        id: 2,
+        name: "제주 월동 양배추 1통",
+        price: 3500,
+        quantity: 1,
+        imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuDzCHJ7e7R9RzAh9vsy895EAUzU_eAF1tY5AMVyeueUT3zsQy71v8Pl2ixAGJJDNZD-1qJK1Kp-1e4If43jQH6gzOsXjJM05Wzs9vj7E_2lJvctmgidUSi-iyHOLjFz1pX70PbAa8k-pakLUhl4D7Y1zLnSyoDRD-Vf2UYrZ0Da39xxka7pTjKxdVyPjht9Yv0nYGxAPrICBl0sblNrU1s8bmZvIT4h1mTzA4nVLSWyl80NXXz0ZtFhitW5DXH1i3YCwOAjcVMiYbT2",
+        imageAlt: "A whole fresh cabbage"
+    }
+];
 
 export default function CheckoutPage() {
     const [isOrderItemsOpen, setIsOrderItemsOpen] = useState(true);
+    const [items, setItems] = useState<CartItem[]>(INITIAL_ITEMS);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const shippingCost = 3000;
+
+    useEffect(() => {
+        const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        setTotalAmount(total);
+    }, [items]);
+
+    const handleQuantityChange = (id: number, change: number) => {
+        setItems(prevItems => prevItems.map(item => {
+            if (item.id === id) {
+                const newQuantity = Math.max(1, item.quantity + change);
+                return { ...item, quantity: newQuantity };
+            }
+            return item;
+        }));
+    };
+
+    const handleDeleteItem = (id: number) => {
+        setItems(prevItems => prevItems.filter(item => item.id !== id));
+    };
+
+    const finalAmount = totalAmount + (items.length > 0 ? shippingCost : 0);
 
     return (
         <div className="flex flex-col items-center py-8 lg:py-12 px-4">
@@ -32,38 +84,58 @@ export default function CheckoutPage() {
                                     className="flex cursor-pointer items-center justify-between gap-4 p-4 w-full text-left"
                                     onClick={() => setIsOrderItemsOpen(!isOrderItemsOpen)}
                                 >
-                                    <p className="text-lg font-bold text-text-light dark:text-text-dark">주문 상품 (2개)</p>
+                                    <p className="text-lg font-bold text-text-light dark:text-text-dark">주문 상품 ({items.length}개)</p>
                                     <span className={`material-symbols-outlined transition-transform duration-200 text-text-light dark:text-text-dark ${isOrderItemsOpen ? 'rotate-180' : ''}`}>expand_more</span>
                                 </button>
 
                                 {isOrderItemsOpen && (
                                     <div className="border-t border-border-light dark:border-border-dark p-4 space-y-4 bg-background-light dark:bg-background-dark">
-                                        <div className="flex items-center gap-4">
-                                            <div
-                                                className="h-16 w-16 rounded-lg bg-cover bg-center shrink-0"
-                                                style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuD6lFa41fRSkzVys7MvkP5jO2owio7NDnFAJ-R9JD6ZWl8smR4gB0lWAjK3vkFVR1gtaXmzaDehXsP9MbhBDB2zZM4c-aZlvQjtGpBrJ_Gn_HArh9mhrUWblFbksuKCuHao-G23HFqKKOgeTxcdebqs8csnh8a5xYNo5UhyH68HFnzX3gL05l-0dT_1AduAR0Emgsq9vUKqM1e8XuGKtywKRyNfw7W7zFdTACR7ean6dx5_24u1VqaP-Le_OtuKQ25dwx3oNtuZqDrD')" }}
-                                                role="img"
-                                                aria-label="Fresh strawberries in a basket"
-                                            />
-                                            <div className="flex-grow min-w-0">
-                                                <p className="font-medium text-text-light dark:text-text-dark truncate">GAP 인증 설향 딸기 1kg</p>
-                                                <p className="text-sm text-text-muted-light dark:text-text-muted-dark">수량: 1</p>
-                                            </div>
-                                            <p className="font-bold text-text-light dark:text-text-dark whitespace-nowrap">18,900원</p>
-                                        </div>
-                                        <div className="flex items-center gap-4">
-                                            <div
-                                                className="h-16 w-16 rounded-lg bg-cover bg-center shrink-0"
-                                                style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDzCHJ7e7R9RzAh9vsy895EAUzU_eAF1tY5AMVyeueUT3zsQy71v8Pl2ixAGJJDNZD-1qJK1Kp-1e4If43jQH6gzOsXjJM05Wzs9vj7E_2lJvctmgidUSi-iyHOLjFz1pX70PbAa8k-pakLUhl4D7Y1zLnSyoDRD-Vf2UYrZ0Da39xxka7pTjKxdVyPjht9Yv0nYGxAPrICBl0sblNrU1s8bmZvIT4h1mTzA4nVLSWyl80NXXz0ZtFhitW5DXH1i3YCwOAjcVMiYbT2')" }}
-                                                role="img"
-                                                aria-label="A whole fresh cabbage"
-                                            />
-                                            <div className="flex-grow min-w-0">
-                                                <p className="font-medium text-text-light dark:text-text-dark truncate">제주 월동 양배추 1통</p>
-                                                <p className="text-sm text-text-muted-light dark:text-text-muted-dark">수량: 1</p>
-                                            </div>
-                                            <p className="font-bold text-text-light dark:text-text-dark whitespace-nowrap">3,500원</p>
-                                        </div>
+                                        {items.length === 0 ? (
+                                            <p className="text-center text-text-muted-light dark:text-text-muted-dark py-4">장바구니가 비어있습니다.</p>
+                                        ) : (
+                                            items.map((item) => (
+                                                <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-b border-border-light dark:border-border-dark last:border-0 pb-4 last:pb-0">
+                                                    <div
+                                                        className="h-20 w-20 rounded-lg bg-cover bg-center shrink-0"
+                                                        style={{ backgroundImage: `url('${item.imageUrl}')` }}
+                                                        role="img"
+                                                        aria-label={item.imageAlt}
+                                                    />
+                                                    <div className="flex-grow min-w-0 w-full">
+                                                        <div className="flex justify-between items-start mb-2">
+                                                            <p className="font-medium text-text-light dark:text-text-dark truncate pr-2">{item.name}</p>
+                                                            <button
+                                                                onClick={() => handleDeleteItem(item.id)}
+                                                                className="text-text-muted-light dark:text-text-muted-dark hover:text-red-500 transition-colors"
+                                                            >
+                                                                <span className="material-symbols-outlined text-xl">close</span>
+                                                            </button>
+                                                        </div>
+                                                        <div className="flex justify-between items-center">
+                                                            <div className="flex items-center border border-border-light dark:border-border-dark rounded-md overflow-hidden">
+                                                                <button
+                                                                    onClick={() => handleQuantityChange(item.id, -1)}
+                                                                    className="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                                                    disabled={item.quantity <= 1}
+                                                                >
+                                                                    <span className="material-symbols-outlined text-sm">remove</span>
+                                                                </button>
+                                                                <span className="px-2 py-1 text-sm font-medium min-w-[2rem] text-center">{item.quantity}</span>
+                                                                <button
+                                                                    onClick={() => handleQuantityChange(item.id, 1)}
+                                                                    className="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                                                >
+                                                                    <span className="material-symbols-outlined text-sm">add</span>
+                                                                </button>
+                                                            </div>
+                                                            <p className="font-bold text-text-light dark:text-text-dark whitespace-nowrap">
+                                                                {(item.price * item.quantity).toLocaleString()}원
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -158,11 +230,13 @@ export default function CheckoutPage() {
                                 <div className="space-y-3 border-b border-border-light dark:border-border-dark pb-4 mb-4 text-sm">
                                     <div className="flex justify-between">
                                         <span className="text-text-muted-light dark:text-text-muted-dark">상품 금액</span>
-                                        <span className="text-text-light dark:text-text-dark">22,400원</span>
+                                        <span className="text-text-light dark:text-text-dark">{totalAmount.toLocaleString()}원</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-text-muted-light dark:text-text-muted-dark">배송비</span>
-                                        <span className="text-text-light dark:text-text-dark">+ 3,000원</span>
+                                        <span className="text-text-light dark:text-text-dark">
+                                            {items.length > 0 ? `+ ${shippingCost.toLocaleString()}원` : '0원'}
+                                        </span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-text-muted-light dark:text-text-muted-dark">할인/포인트</span>
@@ -171,7 +245,7 @@ export default function CheckoutPage() {
                                 </div>
                                 <div className="flex justify-between items-center font-bold text-lg">
                                     <span className="text-text-light dark:text-text-dark">총 결제 금액</span>
-                                    <span className="text-primary text-2xl">25,400원</span>
+                                    <span className="text-primary text-2xl">{finalAmount.toLocaleString()}원</span>
                                 </div>
                             </div>
 
@@ -182,8 +256,11 @@ export default function CheckoutPage() {
                                 </label>
                             </div>
 
-                            <button className="w-full rounded-lg bg-primary h-14 text-white font-bold text-lg hover:bg-primary/90 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors shadow-md">
-                                25,400원 결제하기
+                            <button
+                                className="w-full rounded-lg bg-primary h-14 text-white font-bold text-lg hover:bg-primary/90 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors shadow-md"
+                                disabled={items.length === 0}
+                            >
+                                {finalAmount.toLocaleString()}원 결제하기
                             </button>
                         </div>
                     </div>
